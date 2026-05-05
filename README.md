@@ -1,4 +1,4 @@
-````markdown
+
 # Architecture Matters, but Loss Function Is the Heart of Deep Learning
 
 ## ResNet: Residual Network
