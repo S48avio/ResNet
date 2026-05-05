@@ -291,5 +291,37 @@ A strong architecture alone is not enough. The model must also be trained with t
 
 This project implements a face recognition pipeline using **ResNet-50** as the backbone and **AdaFace** as the loss function. Face detection is used to crop faces before training and testing. The model learns embeddings for face images, and cosine similarity is used to compare two faces. The aim of this project is to understand how modern face recognition systems combine residual networks, embedding learning, angular-margin losses, adaptive margins, and similarity-based matching.
 
+
+### Model Performance
+
+The trained ResNet-50 + AdaFace model was evaluated using both classification accuracy and face verification metrics.
+
+```text
+Total usable images      : 24,497
+Total identities/classes : 1,779
+Training images          : 19,142
+Validation images        : 5,355
+````
+
+Final training results:
+
+```text
+Training Accuracy        : 99.97%
+Validation Accuracy      : 72.94%
+Validation Loss          : 9.0715
+Mean Gradient Norm       : 27.90
+```
+
+Face verification results:
+
+```text
+Validation ROC AUC       : 0.9844
+Best Similarity Threshold: 0.1907
+```
+
+Although the validation classification accuracy was **72.94%** across 1,779 identities, the model achieved a strong **ROC AUC of 0.9844** for face verification. This shows that the learned embedding space is highly effective at separating same-person and different-person face pairs.
+
+
+
 ```
 ```
