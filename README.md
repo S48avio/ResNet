@@ -322,6 +322,40 @@ Best Similarity Threshold: 0.1907
 Although the validation classification accuracy was **72.94%** across 1,779 identities, the model achieved a strong **ROC AUC of 0.9844** for face verification. This shows that the learned embedding space is highly effective at separating same-person and different-person face pairs.
 
 
+## Project 2: Scratch-Built ResNet-18 for Image Classification
 
+This project involves the ground-up implementation of a **ResNet-18** architecture using TensorFlow and Keras to perform high-accuracy binary classification. Unlike standard sequential models that suffer from signal degradation in deeper layers, this project implements **Residual Learning** through skip connections, allowing gradients to flow unimpeded during backpropagation. By building the 18-layer backbone from scratch rather than using pre-trained weights, the project demonstrates how structural innovations like Batch Normalization and Identity Mappings enable the network to converge rapidly and achieve near-perfect metrics on unseen data.
+
+
+
+The core of the architecture is the **Residual Block**, which focuses on learning the difference (residual) between the input and output rather than the entire mapping from scratch. Each block consists of two $3 \times 3$ convolutional layers paired with **Batch Normalization** to stabilize training. When spatial dimensions decrease, a $1 \times 1$ convolution is used in the skip connection to match the shortcut's dimensions to the main path. The model concludes with a **Global Average Pooling** layer and a 50% Dropout rate, effectively regularizing the 11.3 million parameters to prevent overfitting.
+
+
+
+### 💻 Architecture Snippet
+```python
+def residual_block(x, filters, stride=1):
+    shortcut = x
+    # Adjust shortcut if dimensions change
+    if stride != 1 or x.shape[-1] != filters:
+        shortcut = layers.Conv2D(filters, 1, strides=stride, padding='same')(shortcut)
+        shortcut = layers.BatchNormalization()(shortcut)
+
+    # Main Path
+    x = layers.Conv2D(filters, 3, strides=stride, padding='same')(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.ReLU()(x)
+    x = layers.Conv2D(filters, 3, strides=1, padding='same')(x)
+    x = layers.BatchNormalization()(x)
+
+    return layers.ReLU()(layers.Add()([x, shortcut]))
 ```
-```
+
+### 📊 Performance Metrics
+| Metric | Score |
+| :--- | :--- |
+| **Test Accuracy** | **96.34%** |
+| **AUC-ROC** | **99.63%** |
+| **Precision** | **98.55%** |
+| **Recall** | **94.06%** |
+| **Test Loss** | **0.0926** |
